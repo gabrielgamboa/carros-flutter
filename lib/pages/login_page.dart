@@ -1,4 +1,5 @@
 import 'package:carros/api/login_api.dart';
+import 'package:carros/models/usuario.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carros/utils/nav.dart';
@@ -88,8 +89,12 @@ class _LoginPageState extends State<LoginPage> {
     String senha = _tPassword.text;
 
 
-    bool ok = await LoginApi.login(email, senha);
-    if (ok) {
+    Usuario usuario = await LoginApi.login(email, senha);
+
+    // ignore: unnecessary_null_comparison
+    if (usuario != null) {
+      print("$usuario");
+
       push(context, HomePage());
     } else {
       print('Erro ao realizar login!');
