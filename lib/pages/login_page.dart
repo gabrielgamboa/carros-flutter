@@ -2,6 +2,7 @@ import 'package:carros/api/api_response.dart';
 import 'package:carros/api/login_api.dart';
 import 'package:carros/models/usuario.dart';
 import 'package:carros/utils/alert.dart';
+import 'package:carros/utils/snackAlert.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carros/utils/nav.dart';
@@ -94,7 +95,9 @@ class _LoginPageState extends State<LoginPage> {
       Usuario user = response.result;
 
       print(">>>$user");
+
       push(context, HomePage());
+      snackAlert(context, "Bem vindo, Gabriel!");
 
     } else {
       alert(context, response.message!);
