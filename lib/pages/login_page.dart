@@ -1,6 +1,7 @@
 import 'package:carros/api/api_response.dart';
 import 'package:carros/api/login_api.dart';
 import 'package:carros/models/usuario.dart';
+import 'package:carros/utils/alert.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carros/utils/nav.dart';
@@ -77,8 +78,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-
   void _onClickLogin() async {
     bool formOk = _formKey.currentState!.validate();
 
@@ -89,17 +88,16 @@ class _LoginPageState extends State<LoginPage> {
     String email = _tLogin.text;
     String senha = _tPassword.text;
 
-
     ApiResponse response = await LoginApi.login(email, senha);
 
     if (response.ok!) {
       Usuario user = response.result;
 
       print(">>>$user");
-
       push(context, HomePage());
+
     } else {
-      print(response.message);
+      alert(context, response.message!);
     }
   }
 }
