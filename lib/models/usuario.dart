@@ -6,7 +6,7 @@ class Usuario {
 
   List<String>? roles;
 
-  Usuario(Map<String, dynamic> map) {
+  Usuario.fromJson(Map<String, dynamic> map) {
     login = map["login"];
     nome = map["nome"];
     email = map["email"];

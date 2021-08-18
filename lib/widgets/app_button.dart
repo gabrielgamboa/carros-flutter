@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
-  String? text;
-  VoidCallback? onPressed;
+  final String? text;
+  final VoidCallback? onPressed;
 
   AppButton(this.text, {required this.onPressed});
 
