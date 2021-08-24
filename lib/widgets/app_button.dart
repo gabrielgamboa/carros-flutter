@@ -4,21 +4,29 @@ class AppButton extends StatelessWidget {
   final String? text;
   final VoidCallback? onPressed;
 
-  AppButton(this.text, {required this.onPressed});
+  bool showProgress;
+
+  AppButton(this.text, {required this.onPressed, this.showProgress = false});
 
   @override
   Widget build(BuildContext context) {
-     return Container(
+    return Container(
       height: 46,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.blueGrey),
         ),
         onPressed: onPressed,
-        child: Text(
-          text!,
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
+        child: showProgress
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text(
+                text!,
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
       ),
     );
   }

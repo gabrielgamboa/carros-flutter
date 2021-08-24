@@ -22,6 +22,8 @@ class _LoginPageState extends State<LoginPage> {
   final _tPassword = TextEditingController();
   final _focusSenha = FocusNode();
 
+  bool _showProgress = false;
+
   @override
   void initState() {
     super.initState();
@@ -72,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            AppButton('Login', onPressed: _onClickLogin,)
+            AppButton('Login', onPressed: _onClickLogin, showProgress: _showProgress,)
           ],
         ),
       ),
@@ -89,6 +91,10 @@ class _LoginPageState extends State<LoginPage> {
     String email = _tLogin.text;
     String senha = _tPassword.text;
 
+    setState(() {
+      _showProgress = true;
+    });
+
     ApiResponse response = await LoginApi.login(email, senha);
 
     if (response.ok!) {
@@ -102,5 +108,9 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       alert(context, response.message!);
     }
+
+    setState(() {
+      _showProgress = false;
+    });
   }
 }
