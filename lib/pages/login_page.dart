@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
 
       print(">>>$user");
 
-      push(context, HomePage());
+      push(context, HomePage(), replace: true);
       snackAlert(context, "Bem vindo, Gabriel!");
 
     } else {
