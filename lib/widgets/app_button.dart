@@ -18,15 +18,22 @@ class AppButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: showProgress
-            ? Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ? Container(
+              width: MediaQuery.of(context).size.width,
+              child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
                 ),
-              )
-            : Text(
-                text!,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
+            )
+            : Container(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                  text!,
+                  style: TextStyle(color: Colors.white, fontSize: 18,),
+                  textAlign: TextAlign.center,
+                ),
+            ),
       ),
     );
   }

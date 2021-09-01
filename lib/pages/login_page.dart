@@ -10,7 +10,6 @@ import 'package:carros/pages/home_page.dart';
 import 'package:carros/widgets/app_button.dart';
 import 'package:carros/widgets/app_text.dart';
 
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -41,44 +40,72 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _body() {
-    return Form(
-      key: _formKey,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            //passa o nextFocus indicando qual foco ir
-            AppText("E-mail", "Digite seu e-mail",
-                controller: _tLogin,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                nextFocus: _focusSenha, validator: (text) {
-              if (text!.isEmpty) {
-                return "Digite o e-mail!!!";
-              }
-              return null;
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            // passa o focusNode o seu foco
-            AppText("Senha", "Digite sua senha",
-                controller: _tPassword,
-                keyboardType: TextInputType.number,
-                focusNode: _focusSenha, validator: (text) {
-              if (text!.isEmpty) {
-                return "Digite a senha!!!";
-              }
-              return null;
-            }, password: true),
-            SizedBox(
-              height: 20,
-            ),
-            AppButton('Login', onPressed: _onClickLogin, showProgress: _showProgress,)
-          ],
+    return Stack(children: [
+      Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Image.asset(
+          "assets/images/sky.jfif",
+          fit: BoxFit.fill,
         ),
       ),
-    );
+      Container(
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 4.0, left: 4.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                child: Form(
+                  key: _formKey,
+                  child: Container(
+                    height: 250,
+                    padding: EdgeInsets.all(12.0),
+                    child: ListView(
+                      children: [
+                        //passa o nextFocus indicando qual foco ir
+                        AppText("E-mail", "Digite seu e-mail",
+                            controller: _tLogin,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            nextFocus: _focusSenha, validator: (text) {
+                          if (text!.isEmpty) {
+                            return "Digite o e-mail!!!";
+                          }
+                          return null;
+                        }),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        // passa o focusNode o seu foco
+                        AppText("Senha", "Digite sua senha",
+                            controller: _tPassword,
+                            keyboardType: TextInputType.number,
+                            focusNode: _focusSenha, validator: (text) {
+                          if (text!.isEmpty) {
+                            return "Digite a senha!!!";
+                          }
+                          return null;
+                        }, password: true),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        AppButton(
+                          'Login',
+                          onPressed: _onClickLogin,
+                          showProgress: _showProgress,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ]);
   }
 
   void _onClickLogin() async {
@@ -104,7 +131,6 @@ class _LoginPageState extends State<LoginPage> {
 
       push(context, HomePage(), replace: true);
       snackAlert(context, "Bem vindo, Gabriel!");
-
     } else {
       alert(context, response.message!);
     }
