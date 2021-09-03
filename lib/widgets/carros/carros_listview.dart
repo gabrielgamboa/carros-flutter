@@ -2,20 +2,31 @@ import 'package:carros/api/carros/carros_api.dart';
 import 'package:carros/models/carro.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class CarrosListView extends StatelessWidget {
-  String tipo;
+class CarrosListView extends StatefulWidget {
+  final String tipo;
   
   CarrosListView({required this.tipo});
 
+  @override
+  _CarrosListViewState createState() => _CarrosListViewState();
+}
 
+//mixin sao usados com a palavra "with" e servem pra dar especificacoes pra alguma determinada classe
+class _CarrosListViewState extends State<CarrosListView> with AutomaticKeepAliveClientMixin<CarrosListView> {
+  
+  @override
+  // SingleTickerProviderStateMixin no widget da home page
+  // AutomaticKeepAliveClientMixin no widget que você quer manter o estado sem carregar novamente
+  bool get wantKeepAlive => true;
+  
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return _body();
   }
 
   _body() {
-    Future<List<Carro>> futureCarros = CarrosApi.getCarros(tipo);
+    Future<List<Carro>> futureCarros = CarrosApi.getCarros(widget.tipo);
 
     //FutureBuilder é utilizado para renderizar Widgets com base em resolução de uma Future
     return FutureBuilder(
