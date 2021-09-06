@@ -1,4 +1,5 @@
 import 'package:carros/api/carros/carros_api.dart';
+import 'package:carros/utils/prefs.dart';
 import 'package:carros/widgets/drawer_list.dart';
 import 'package:carros/widgets/carros/carros_listview.dart';
 import 'package:flutter/foundation.dart';
@@ -23,7 +24,16 @@ class _HomePageState extends State<HomePage>
         length: 3,
         vsync: this /*passando o mixin do widget via palavra "this"*/);
 
-        _tabBarController.index = 1;
+        Future<int> futurGetInt = Prefs.getInt("tabIndex");
+
+        //utilizando o then para receber o valor da future através do parâmetro da callback e atribuir no index da tabBarController
+        futurGetInt.then((int tabIndex) {
+          _tabBarController.index = tabIndex;
+        });
+
+        _tabBarController.addListener(() {
+          Prefs.setInt("tabIndex", _tabBarController.index);
+        });
   }
 
   @override
