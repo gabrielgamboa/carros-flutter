@@ -12,28 +12,27 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin<HomePage> {
-
   late TabController _tabBarController;
 
-  //construtor de um statefull Widget, é chamado apenas uma vez quando o componente é renderizado 
-  //ou seja, não é executado novamente quando o setState é chamado 
+  //construtor de um statefull Widget, é chamado apenas uma vez quando o componente é renderizado
+  //ou seja, não é executado novamente quando o setState é chamado
   @override
   void initState() {
     super.initState();
+    _initTabBars(); //inicializar controller da tabBar via método pra poder utilizar async/await e retirar o uso do then
+  }
+
+  Future<void> _initTabBars() async {
     _tabBarController = TabController(
         length: 3,
         vsync: this /*passando o mixin do widget via palavra "this"*/);
 
-        Future<int> futurGetInt = Prefs.getInt("tabIndex");
+    int futureGetInt = await Prefs.getInt("tabIndex");
+    _tabBarController.index = futureGetInt;
 
-        //utilizando o then para receber o valor da future através do parâmetro da callback e atribuir no index da tabBarController
-        futurGetInt.then((int tabIndex) {
-          _tabBarController.index = tabIndex;
-        });
-
-        _tabBarController.addListener(() {
-          Prefs.setInt("tabIndex", _tabBarController.index);
-        });
+    _tabBarController.addListener(() {
+      Prefs.setInt("tabIndex", _tabBarController.index);
+    });
   }
 
   @override
@@ -74,4 +73,6 @@ class _HomePageState extends State<HomePage>
       ),
     );
   }
+
+  
 }
