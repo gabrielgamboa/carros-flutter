@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin<HomePage> {
   late TabController _tabController;
+  bool _gridView = false;
 
   @override
   void initState() {
@@ -46,6 +47,18 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: AppBar(
         title: Text("Carros"),
+        actions: [
+          IconButton(icon: Icon(Icons.list), onPressed: () {
+            setState(() {
+              _gridView = false;
+            });
+          }),
+          IconButton(icon: Icon(Icons.grid_on),onPressed: () {
+            setState(() {
+              _gridView = true;
+            });
+          }),
+        ],
         bottom: _tabController == null
             ? null
             : TabBar(
@@ -70,9 +83,9 @@ class _HomePageState extends State<HomePage>
           : TabBarView(
               controller: _tabController,
               children: [
-                CarrosListView(tipo: describeEnum(TipoCarro.classicos)),
-                CarrosListView(tipo: describeEnum(TipoCarro.esportivos)),
-                CarrosListView(tipo: describeEnum(TipoCarro.luxo)),
+                CarrosListView(tipo: describeEnum(TipoCarro.classicos), gridView: _gridView,),
+                CarrosListView(tipo: describeEnum(TipoCarro.esportivos), gridView: _gridView),
+                CarrosListView(tipo: describeEnum(TipoCarro.luxo), gridView: _gridView),
               ],
             ),
       drawer: DrawerList(),

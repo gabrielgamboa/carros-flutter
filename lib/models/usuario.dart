@@ -44,7 +44,6 @@ class Usuario {
   
   static void clear() {
     Prefs.setString("user.prefs", "");
-    Prefs.setString("tabIdx", "");
   }
 
   void save() {
