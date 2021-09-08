@@ -12,67 +12,70 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin<HomePage> {
-  late TabController _tabBarController;
+  late TabController _tabController;
 
-  //construtor de um statefull Widget, é chamado apenas uma vez quando o componente é renderizado
-  //ou seja, não é executado novamente quando o setState é chamado
   @override
   void initState() {
     super.initState();
-    _initTabBars(); //inicializar controller da tabBar via método pra poder utilizar async/await e retirar o uso do then
+
+    _initTabs();
   }
 
-  Future<void> _initTabBars() async {
-    _tabBarController = TabController(
-        length: 3,
-        vsync: this /*passando o mixin do widget via palavra "this"*/);
+  _initTabs() async {
 
-    int futureGetInt = await Prefs.getInt("tabIndex");
-    _tabBarController.index = futureGetInt;
+    // Primeiro busca o índice nas prefs.
+    int tabIdx = await Prefs.getInt("tabIdx");
 
-    _tabBarController.addListener(() {
-      Prefs.setInt("tabIndex", _tabBarController.index);
+    // Depois cria o TabController
+    // No método build na primeira vez ele poderá estar nulo
+    _tabController = TabController(length: 3, vsync: this);
+
+    // Agora que temos o TabController e o índice da tab,
+    // chama o setState para redesenhar a tela
+    setState(() {
+      _tabController.index = tabIdx;
+    });
+
+    _tabController.addListener(() {
+      Prefs.setInt("tabIdx", _tabController.index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Carros Home Page"),
-          centerTitle: true,
-          bottom: TabBar(
-            controller: _tabBarController,
-            tabs: [
-              Tab(
-                text: "Clássicos",
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Carros"),
+        bottom: _tabController == null
+            ? null
+            : TabBar(
+                controller: _tabController,
+                tabs: [
+                  Tab(
+                    text: "Clássicos",
+                  ),
+                  Tab(
+                    text: "Esportivos",
+                  ),
+                  Tab(
+                    text: "Luxo",
+                  )
+                ],
               ),
-              Tab(
-                text: "Esportivos",
-              ),
-              Tab(
-                text: "Luxo",
-              ),
-            ],
-          ),
-        ),
-        drawer: DrawerList(),
-        body: TabBarView(controller: _tabBarController, children: [
-          CarrosListView(
-            tipo: describeEnum(TipoCarro.classicos),
-          ),
-          CarrosListView(
-            tipo: describeEnum(TipoCarro.esportivos),
-          ),
-          CarrosListView(
-            tipo: describeEnum(TipoCarro.luxo),
-          ),
-        ]),
       ),
+      body: _tabController == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : TabBarView(
+              controller: _tabController,
+              children: [
+                CarrosListView(tipo: describeEnum(TipoCarro.classicos)),
+                CarrosListView(tipo: describeEnum(TipoCarro.esportivos)),
+                CarrosListView(tipo: describeEnum(TipoCarro.luxo)),
+              ],
+            ),
+      drawer: DrawerList(),
     );
   }
-
-  
 }

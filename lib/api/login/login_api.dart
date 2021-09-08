@@ -17,12 +17,15 @@ class LoginApi {
       String stringParams = json.encode(params);
 
       var response = await http.post(url, body: stringParams, headers: headers);
+      print(response.body);
 
       //Recebe uma string e transforma em Map Object
       Map<String, dynamic> responseMap = json.decode(response.body);
 
       if (response.statusCode == 200) {
         final Usuario usuario = Usuario.fromJson(responseMap);
+
+        usuario.save();
 
         //construtor nomeado "ok" para caso a requisição tiver êxito
         return ApiResponse.ok(usuario);
